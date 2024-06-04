@@ -28,22 +28,22 @@ class Address(BaseModel):
     address: str
 
 app = FastAPI()
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["*"],  # Allows all origins
     allow_credentials=True,
-    allow_methods=["GET", "POST"],
-    allow_headers=["*"],
+    allow_methods=["*"],  # Allows all methods
+    allow_headers=["*"],  # Allows all headers
 )
 GOOGLE_API_KEY = os.environ.get("GOOGLE_API_KEY")
 
 year_colors = {
-    2019: 'red',
-    2020: 'blue',
-    2021: 'green',
-    2022: 'orange',
-    2023: 'purple',
-    2024: 'lime',
+    2016: 'blue',
+    2017: 'green',
+    2018: 'yellow',
+    2019: 'orange',
+    2020: 'red',
 }
 
 
@@ -71,15 +71,39 @@ def geocode(address: str, api_key: str) -> Tuple[float, float]:
     else:
         raise ConnectionError(f"HTTP request failed. Status code: {response.status_code}")
 
+def rev_geocode(latitude: float, longitude: float, api_key: str) -> str:
+    url = f"https://maps.googleapis.com/maps/api/geocode/json?latlng={latitude},{longitude}&key={api_key}"
+    response = requests.get(url)
+    if response.status_code == 200:
+        data = response.json()
+        if data['status'] == 'OK':
+            address = data['results'][0]['formatted_address']
+            return address
+        else:
+            raise ValueError(f"Reverse geocoding failed. Status: {data['status']}")
+    else:
+        raise ConnectionError(f"HTTP request failed. Status code: {response.status_code}")
+
+@app.get("/rev_geocode")
+def get_address(latitude: float, longitude: float):
+    try:
+        address = rev_geocode(latitude, longitude, GOOGLE_API_KEY)
+        print(address)
+        return {"address": address}
+    except Exception as e:
+        return {"error": str(e)}
+
 def generate_circle_points(center, radius=5):
     points = []
-    for i in range(361):
-        bearing = i
+    for i in range(120):
+        bearing = 3*i
         dest = geodesic(kilometers=radius).destination((center['latitude'],center['longitude']), bearing)
         points.append(f"{dest.latitude},{dest.longitude}")
     return points
 
 def get_static_map_url(data: List[dict]):
+    if len(data) > 15:
+        data = data[:15]  
     base_url = "https://maps.googleapis.com/maps/api/staticmap?"
     center = data.pop(0)
     center_param = f"center={center['latitude']},{center['longitude']}&markers=color:black%7Clabel:C%7C{center['latitude']},{center['longitude']}"
@@ -91,7 +115,7 @@ def get_static_map_url(data: List[dict]):
     path_params = generate_circle_points(center)
     path_param = "|".join(path_params)
     url = f"{base_url}{center_param}&zoom=11&size=400x400&{markers_param}&path=color:black|weight:5|{path_param}&key={GOOGLE_API_KEY}"
-    print(url)
+    #print(url)
     return url
 
 @app.post("/static-map")
@@ -104,7 +128,7 @@ async def generate_static_map(data: List[dict]):
     except Exception as e:
         print("Error:", e)
 
-@app.post("/coordinates/")
+@app.post("/address/")
 async def get_coordinates(address: Address):
     try:
         longitude, latitude = geocode(address.address, GOOGLE_API_KEY)
@@ -113,17 +137,43 @@ async def get_coordinates(address: Address):
         pipeline = [
             {"$geoNear": {"near": {"type": "Point", "coordinates": [longitude, latitude]},
                           "distanceField": "DISTANCE", "spherical": True, "maxDistance": radius * 1000}},
-            {"$project": {"year": 1, "COORD": 1}},
-            {"$match": {"year": {"$gte": datetime.now().year - 5}}},
+            {"$project": {"year": 1, "COORD": 1,"DISTANCE": 1}},
+            {"$match": {"year": {"$gte": 2016}}},
+            {"$sort": { "year":-1, "DISTANCE":1 } }, 
         ]
-
+        print(pipeline)
         documents = list(col.aggregate(pipeline))
+        print(documents)
         response = [{
             "longitude": longitude,
             "latitude": latitude
             }]
         for doc in documents:
             response.append({"longitude": doc['COORD']['coordinates'][0], "latitude": doc['COORD']['coordinates'][1], "year": doc['year']})        
+        return response
+
+    except Exception as e:
+        print("Error:", e)
+
+@app.get("/coordinates/")
+async def get_data(latitude: float, longitude: float):
+    try:
+        pipeline = [
+            {"$geoNear": {"near": {"type": "Point", "coordinates": [longitude, latitude]},
+                          "distanceField": "DISTANCE", "spherical": True, "maxDistance": radius * 1000}},
+            {"$project": {"year": 1, "COORD": 1,"DISTANCE": 1}},
+            {"$match": {"year": {"$gte": 2016}}},
+            {"$sort": { "year":-1, "DISTANCE":1 } }, 
+        ]
+        print(pipeline)
+        documents = list(col.aggregate(pipeline))
+        print(documents)
+        response = [{
+            "longitude": longitude,
+            "latitude": latitude
+            }]
+        for doc in documents:
+            response.append({"longitude": doc['COORD']['coordinates'][0], "latitude": doc['COORD']['coordinates'][1], "year": doc['year'],  "distance": doc['DISTANCE']})        
         return response
 
     except Exception as e:

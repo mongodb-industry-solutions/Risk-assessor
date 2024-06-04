@@ -51,9 +51,9 @@ if __name__ == "__main__":
 
     pipeline = [
         {"$geoNear": { "near": { "type": "Point", "coordinates": [longitude, latitude] }, "distanceField": "DISTANCE", "spherical": True, "maxDistance": radius*1000 } },
-        {"$project": {"year":1, "COORD": 1, "DISTANCE":1 } },
-        {"$match": {"year": {"$gte": datetime.now().year - 5}}},
-        {"$sort": { "DISTANCE":1 } },        
+        {"$project": {"year":1, "COORD": "$COORD.coordinates", "DISTANCE":1 } },
+        {"$match": {"year": {"$gte": 2016}}},
+        {"$sort": { "year":-1, "DISTANCE":1 } },    
         #{"$match": {"year": {"$gte": datetime.now().year - 5}}},
         #{"$project": {"year":1, "DISTANT_RIVER":1, "DESCRIPTION":1, "COORD": 1, "DISTANCE":1 } },
         #{"$match": { "COORD": { "$geoWithin": { "$centerSphere": [[longitude, latitude], radius/6371 ] } } } }, 
