@@ -1,11 +1,10 @@
 // BusinessPlan.js
 import React, { useContext, useState } from 'react';
-import ApiResponseContext from '../context/ApiResponseContext';
 import TextArea from '@leafygreen-ui/text-area';
 import Button from '@leafygreen-ui/button';
 
 function BusinessPlan() {
-  const apiResponse = useContext(ApiResponseContext);
+  const apiResponse = useContext('');
   const [value, setValue] = useState('');
 
   const handleSubmit = () => {

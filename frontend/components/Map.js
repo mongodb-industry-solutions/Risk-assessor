@@ -7,7 +7,6 @@ import {SearchInput} from '@leafygreen-ui/search-input';
 import styles from '../styles/map.module.css';
 import Pin from '@leafygreen-ui/icon/dist/Pin';
 import IconButton from '@leafygreen-ui/icon-button';
-import ApiResponseContext from '../context/ApiResponseContext';
 
 
 const icons = {
@@ -140,7 +139,6 @@ const Map = ({ showIcon, coordinates }) => {
   ];
 
   return (
-    <ApiResponseContext.Provider value={apiResponse}>
         <div className={styles.mapContainer}>
             <div className={styles.searchBar}> 
                 <SearchInput className={styles.searchInput} value={address}
@@ -179,7 +177,6 @@ const Map = ({ showIcon, coordinates }) => {
                 </div>
             </div>
         </div>
-    </ApiResponseContext.Provider>
   );
 };
 

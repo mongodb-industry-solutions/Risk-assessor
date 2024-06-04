@@ -4,7 +4,7 @@ import styles from '../styles/Home.module.css';
 import Header from '../components/Header';
 import Avatar from '../components/Avatar';  
 import React, { useState, useEffect } from 'react';
-import BusinessPlan from '@/components/businessPlan';
+import BusinessPlan from '../components/BusinessPlan';
 
 const Map = dynamic(() => import('../components/Map'), { ssr: false });
 
