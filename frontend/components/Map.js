@@ -7,7 +7,7 @@ import {SearchInput} from '@leafygreen-ui/search-input';
 import styles from '../styles/map.module.css';
 import Pin from '@leafygreen-ui/icon/dist/Pin';
 import IconButton from '@leafygreen-ui/icon-button';
-
+import { useMarkers } from '../context/Markers';
 
 const icons = {
   selected: L.icon({
@@ -48,18 +48,22 @@ const icons = {
   }),
 };
 
-const Map = ({ showIcon, coordinates }) => {
+const Map = ({ coordinates }) => {
   const [selectedCoords, setSelectedCoords] = useState(null);
   const [zoom, setZoom] = useState(4);
-  const [apiResponse, setApiResponse] = useState(null);
   const [showMarkers, setShowMarkers] = useState(false);
   const [position, setPosition] = useState(null);
-  const [address, setAddress] = useState(null);
+  const { markers, setMarkers } = useMarkers();
+  const { address, setAddress } = useMarkers();
+  const { llmResponse } = useMarkers();
   
   
-  const handleMapClick = (coords) => {
+  const handleMapClick = async (coords) => {
     setSelectedCoords(coords);
     setShowMarkers(false);
+    const newMarkers = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/coordinates?latitude=${coords.lat}&longitude=${coords.lng}`);
+    const data = await newMarkers.json();
+    setMarkers(data);
   };
   
   useEffect(() => {
@@ -68,11 +72,6 @@ const Map = ({ showIcon, coordinates }) => {
       handleMapClick(coordinates);
       setZoom(18);
     }
-
-    fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/coordinates?latitude=${coordinates.lat}&longitude=${coordinates.lng}`)
-            .then(response => response.json())
-            .then(data => setApiResponse(JSON.stringify(data, null, 2)))
-            .catch((error) => console.error('Error:', error));
 
   }, [coordinates]);
 
@@ -106,10 +105,6 @@ const Map = ({ showIcon, coordinates }) => {
         setZoom(18);
   
         map.once('moveend', () => {
-          fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/coordinates?latitude=${e.latlng.lat}&longitude=${e.latlng.lng}`)
-            .then(response => response.json())
-            .then(data => setApiResponse(JSON.stringify(data, null, 2)))
-            .catch((error) => console.error('Error:', error));
 
           fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/rev_geocode?latitude=${e.latlng.lat}&longitude=${e.latlng.lng}`)
             .then(response => response.json())
@@ -154,22 +149,22 @@ const Map = ({ showIcon, coordinates }) => {
                         });
                         }
                     }}/>
-                {showIcon && 
+                {llmResponse!=='' && 
                     <IconButton className={styles.iconButton} onClick={handleButtonClick} aria-label="Some Menu">
                         <Pin />
                     </IconButton> }
             </div>  
             <div className={styles.mapBox}> 
-                <MapContainer center={[37.8, -96]} zoom={zoom} style={{ height: '500px', width: '100%', zIndex: '1' }} maxBounds={bounds} minZoom={4}>
+                <MapContainer center={[37.8, -96]} zoom={zoom} style={{ height: '100%', width: '100%', minHeight: '350px', minWidth: '350px', zIndex: '1', }} maxBounds={bounds} minZoom={4}>
                     <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                         attribution={selectedCoords ? `Selected Coordinates: ${selectedCoords.lat}, ${selectedCoords.lng}`: ''} />
                     <MapEvents />
                     {position !== null && <Marker position={position} icon={icons.selected}/>}
-                    {showMarkers && apiResponse && JSON.parse(apiResponse).slice(1).map((item, index) => (
-                    <Circle center={position} radius={5000} fillOpacity={0.02} />
+                    {showMarkers && markers && position && markers.slice(1).map((item, index) => (
+                        <Circle center={position} radius={5000} fillOpacity={0.02} />
                     ))}
-                    {showMarkers && apiResponse && JSON.parse(apiResponse).slice(1).map((item, index) => (
-                    <Marker key={index} position={[item.latitude, item.longitude]} icon={icons[item.year]} />
+                    {showMarkers && markers && position && markers.slice(1).map((item, index) => (
+                        <Marker key={index} position={[item.latitude, item.longitude]} icon={icons[item.year]} />
                     ))}
                 </MapContainer>
                 <div className={styles.solution}> 

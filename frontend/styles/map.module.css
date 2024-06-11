@@ -1,6 +1,7 @@
 /* map.module.css */
 .mapContainer {
   min-width: 650px;
+  flex: 1;
 }
 
 .mapBox {
