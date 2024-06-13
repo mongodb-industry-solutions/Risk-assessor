@@ -11,7 +11,6 @@ import os
 from datetime import datetime
 from pymongo import MongoClient
 import requests
-import polyline
 
 from geopy.distance import geodesic
 load_dotenv()

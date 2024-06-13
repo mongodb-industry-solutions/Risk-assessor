@@ -1,0 +1,20 @@
+services:
+  aml-fraud-detection-front:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    image: loan-risk-assessor-front:latest
+    ports:
+      - "3000:3000"
+    restart: always
+    container_name: loan-risk-assessor-front
+
+  aml-fraud-detection-back:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    image: loan-risk-assessor-back:latest
+    ports:
+      - "8080:8080"
+    restart: always
+    container_name: loan-risk-assessor-back

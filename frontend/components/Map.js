@@ -3,7 +3,7 @@ import { MapContainer, TileLayer, useMapEvents, Marker, Circle } from 'react-lea
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import Legend from './Legend';
-import {SearchInput} from '@leafygreen-ui/search-input';
+import {SearchInput, SearchResult} from '@leafygreen-ui/search-input';
 import styles from '../styles/map.module.css';
 import Pin from '@leafygreen-ui/icon/dist/Pin';
 import IconButton from '@leafygreen-ui/icon-button';
@@ -133,6 +133,9 @@ const Map = ({ coordinates }) => {
     [49.384358, -66.934570]
   ];
 
+  const MDBheadquarters = "1633 Broadway 38th floor, New York, NY 10019, United States";
+  const MDBCali = "88 Kearny St Suite 500, San Francisco, CA 94108, United States";
+
   return (
         <div className={styles.mapContainer}>
             <div className={styles.searchBar}> 
@@ -148,8 +151,35 @@ const Map = ({ coordinates }) => {
                             }
                         });
                         }
-                    }}/>
-                {llmResponse!=='' && 
+                    }}>
+                    <SearchResult description="MDB Headquarters"
+                      onClick={() => {
+                        fetchCoordinates(MDBheadquarters).then(coords => {
+                          if (coords) {
+                              setPosition(coords);
+                              handleMapClick(coords);
+                              setZoom(18);
+                              setAddress(MDBheadquarters);
+                          }
+                      });
+                      }}>
+                      {MDBheadquarters} 
+                    </SearchResult>
+                    <SearchResult description="MDB California office"
+                      onClick={() => {
+                        fetchCoordinates(MDBCali).then(coords => {
+                          if (coords) {
+                              setPosition(coords);
+                              handleMapClick(coords);
+                              setZoom(18);
+                              setAddress(MDBCali);
+                          }
+                      });
+                      }}>
+                      {MDBCali} 
+                    </SearchResult>
+                  </SearchInput>
+                {llmResponse !== '' && 
                     <IconButton className={styles.iconButton} onClick={handleButtonClick} aria-label="Some Menu">
                         <Pin />
                     </IconButton> }
