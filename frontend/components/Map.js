@@ -1,47 +1,53 @@
-import React, { useState, useEffect } from 'react';
-import { MapContainer, TileLayer, useMapEvents, Marker, Circle } from 'react-leaflet';
-import 'leaflet/dist/leaflet.css';
-import L from 'leaflet';
-import Legend from './Legend';
-import {SearchInput, SearchResult} from '@leafygreen-ui/search-input';
-import styles from '../styles/map.module.css';
-import Pin from '@leafygreen-ui/icon/dist/Pin';
-import IconButton from '@leafygreen-ui/icon-button';
-import { useMarkers } from '../context/Markers';
+import React, { useState, useEffect } from "react";
+import {
+  MapContainer,
+  TileLayer,
+  useMapEvents,
+  Marker,
+  Circle,
+} from "react-leaflet";
+import "leaflet/dist/leaflet.css";
+import L from "leaflet";
+import Legend from "./Legend";
+import { SearchInput, SearchResult } from "@leafygreen-ui/search-input";
+import styles from "../styles/map.module.css";
+import Pin from "@leafygreen-ui/icon/dist/Pin";
+import IconButton from "@leafygreen-ui/icon-button";
+import { useMarkers } from "../context/Markers";
 
 const icons = {
   selected: L.icon({
-    iconUrl: 'http://localhost:3000/gray.png',
+    iconUrl: "/gray.png",
     iconSize: [23, 40],
     shadowSize: [23, 40],
     iconAnchor: [11, 20],
   }),
   2016: L.icon({
-    iconUrl: 'http://localhost:3000/blue.png',
+    iconUrl: "/blue.png",
     iconSize: [23, 40],
     shadowSize: [23, 40],
     iconAnchor: [11, 20],
   }),
   2017: L.icon({
-    iconUrl: 'http://localhost:3000/green.png',
+    iconUrl: "/green.png",
     iconSize: [23, 40],
     shadowSize: [23, 40],
     iconAnchor: [11, 20],
   }),
   2018: L.icon({
-    iconUrl: 'http://localhost:3000/yellow.png',
+    iconUrl: "/yellow.png",
     iconSize: [23, 40],
     shadowSize: [23, 40],
     iconAnchor: [11, 20],
   }),
   2019: L.icon({
-    iconUrl: 'http://localhost:3000/orange.png',
+    iconUrl: "/orange.png",
     iconSize: [23, 40],
     shadowSize: [23, 40],
     iconAnchor: [11, 20],
   }),
   2020: L.icon({
-    iconUrl: 'http://localhost:3000/red.png',
+    iconUrl: "/red.png",
     iconSize: [23, 40],
     shadowSize: [23, 40],
     iconAnchor: [11, 20],
@@ -56,152 +62,202 @@ const Map = ({ coordinates }) => {
   const { markers, setMarkers } = useMarkers();
   const { address, setAddress } = useMarkers();
   const { llmResponse } = useMarkers();
-  
-  
+
   const handleMapClick = async (coords) => {
     setSelectedCoords(coords);
     setShowMarkers(false);
-    const newMarkers = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/coordinates?latitude=${coords.lat}&longitude=${coords.lng}`);
+    const newMarkers = await fetch(
+      `${process.env.NEXT_PUBLIC_API_ENDPOINT}/coordinates?latitude=${coords.lat}&longitude=${coords.lng}`
+    );
     const data = await newMarkers.json();
     setMarkers(data);
   };
-  
+
   useEffect(() => {
     if (coordinates) {
       setPosition(coordinates);
       handleMapClick(coordinates);
       setZoom(18);
     }
-
   }, [coordinates]);
 
   const handleButtonClick = () => {
-    setShowMarkers(prevShowMarkers => !prevShowMarkers);
-    setZoom(prevZoom => prevZoom === 11 ? 18 : 11);
+    setShowMarkers((prevShowMarkers) => !prevShowMarkers);
+    setZoom((prevZoom) => (prevZoom === 11 ? 18 : 11));
   };
 
   const fetchCoordinates = async (address) => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/address/`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ address })
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_ENDPOINT}/address/`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ address }),
+        }
+      );
       const data = await response.json();
       //console.log('fetchCoordinates:', data[0]);
       return { lat: data[0].latitude, lng: data[0].longitude };
     } catch (error) {
-      console.error('Error fetching coordinates:', error);
+      console.error("Error fetching coordinates:", error);
     }
   };
-  
+
   const MapEvents = () => {
     const map = useMapEvents({
       click: (e) => {
         setPosition(e.latlng);
         handleMapClick(e.latlng);
         setZoom(18);
-  
-        map.once('moveend', () => {
 
-          fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/rev_geocode?latitude=${e.latlng.lat}&longitude=${e.latlng.lng}`)
-            .then(response => response.json())
-            .then(data => {
+        map.once("moveend", () => {
+          fetch(
+            `${process.env.NEXT_PUBLIC_API_ENDPOINT}/rev_geocode?latitude=${e.latlng.lat}&longitude=${e.latlng.lng}`
+          )
+            .then((response) => response.json())
+            .then((data) => {
               setAddress(data.address);
             })
-            .catch((error) => console.error('Error:', error));
+            .catch((error) => console.error("Error:", error));
         });
-      }
+      },
     });
-  
+
     useEffect(() => {
       if (position) {
-        map.flyTo(position, zoom,  {
-            animate: true,
-            duration: 0.5
-          });
+        map.flyTo(position, zoom, {
+          animate: true,
+          duration: 0.5,
+        });
       }
     }, [zoom, position]);
-  
+
     return null;
   };
 
   const bounds = [
-    [24.396308, -125.000000],
-    [49.384358, -66.934570]
+    [24.396308, -125.0],
+    [49.384358, -66.93457],
   ];
 
-  const MDBheadquarters = "1633 Broadway 38th floor, New York, NY 10019, United States";
-  const MDBCali = "88 Kearny St Suite 500, San Francisco, CA 94108, United States";
+  const MDBheadquarters =
+    "1633 Broadway 38th floor, New York, NY 10019, United States";
+  const MDBCali =
+    "88 Kearny St Suite 500, San Francisco, CA 94108, United States";
 
   return (
-        <div className={styles.mapContainer}>
-            <div className={styles.searchBar}> 
-                <SearchInput className={styles.searchInput} value={address}
-                    onChange={event => setAddress(event.target.value)}
-                    onKeyDown={event => {
-                        if (event.key === 'Enter') {
-                        fetchCoordinates(address).then(coords => {
-                            if (coords) {
-                                setPosition(coords);
-                                handleMapClick(coords);
-                                setZoom(18);
-                            }
-                        });
-                        }
-                    }}>
-                    <SearchResult description="MDB Headquarters"
-                      onClick={() => {
-                        fetchCoordinates(MDBheadquarters).then(coords => {
-                          if (coords) {
-                              setPosition(coords);
-                              handleMapClick(coords);
-                              setZoom(18);
-                              setAddress(MDBheadquarters);
-                          }
-                      });
-                      }}>
-                      {MDBheadquarters} 
-                    </SearchResult>
-                    <SearchResult description="MDB California office"
-                      onClick={() => {
-                        fetchCoordinates(MDBCali).then(coords => {
-                          if (coords) {
-                              setPosition(coords);
-                              handleMapClick(coords);
-                              setZoom(18);
-                              setAddress(MDBCali);
-                          }
-                      });
-                      }}>
-                      {MDBCali} 
-                    </SearchResult>
-                  </SearchInput>
-                {llmResponse !== '' && 
-                    <IconButton className={styles.iconButton} onClick={handleButtonClick} aria-label="Some Menu">
-                        <Pin />
-                    </IconButton> }
-            </div>  
-            <div className={styles.mapBox}> 
-                <MapContainer center={[37.8, -96]} zoom={zoom} style={{ height: '100%', width: '100%', minHeight: '350px', minWidth: '350px', zIndex: '1', }} maxBounds={bounds} minZoom={4}>
-                    <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                        attribution={selectedCoords ? `Selected Coordinates: ${selectedCoords.lat}, ${selectedCoords.lng}`: ''} />
-                    <MapEvents />
-                    {position !== null && <Marker position={position} icon={icons.selected}/>}
-                    {showMarkers && markers && position && markers.slice(1).map((item, index) => (
-                        <Circle center={position} radius={5000} fillOpacity={0.02} />
-                    ))}
-                    {showMarkers && markers && position && markers.slice(1).map((item, index) => (
-                        <Marker key={index} position={[item.latitude, item.longitude]} icon={icons[item.year]} />
-                    ))}
-                </MapContainer>
-                <div className={styles.solution}> 
-                    {showMarkers && <Legend />}
-                </div>
-            </div>
-        </div>
+    <div className={styles.mapContainer}>
+      <div className={styles.searchBar}>
+        <SearchInput
+          className={styles.searchInput}
+          value={address}
+          onChange={(event) => setAddress(event.target.value)}
+          onKeyDown={(event) => {
+            if (event.key === "Enter") {
+              fetchCoordinates(address).then((coords) => {
+                if (coords) {
+                  setPosition(coords);
+                  handleMapClick(coords);
+                  setZoom(18);
+                }
+              });
+            }
+          }}
+        >
+          <SearchResult
+            description="MDB Headquarters"
+            onClick={() => {
+              fetchCoordinates(MDBheadquarters).then((coords) => {
+                if (coords) {
+                  setPosition(coords);
+                  handleMapClick(coords);
+                  setZoom(18);
+                  setAddress(MDBheadquarters);
+                }
+              });
+            }}
+          >
+            {MDBheadquarters}
+          </SearchResult>
+          <SearchResult
+            description="MDB California office"
+            onClick={() => {
+              fetchCoordinates(MDBCali).then((coords) => {
+                if (coords) {
+                  setPosition(coords);
+                  handleMapClick(coords);
+                  setZoom(18);
+                  setAddress(MDBCali);
+                }
+              });
+            }}
+          >
+            {MDBCali}
+          </SearchResult>
+        </SearchInput>
+        {llmResponse !== "" && (
+          <IconButton
+            className={styles.iconButton}
+            onClick={handleButtonClick}
+            aria-label="Some Menu"
+          >
+            <Pin />
+          </IconButton>
+        )}
+      </div>
+      <div className={styles.mapBox}>
+        <MapContainer
+          center={[37.8, -96]}
+          zoom={zoom}
+          style={{
+            height: "100%",
+            width: "100%",
+            minHeight: "350px",
+            minWidth: "350px",
+            zIndex: "1",
+          }}
+          maxBounds={bounds}
+          minZoom={4}
+        >
+          <TileLayer
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            attribution={
+              selectedCoords
+                ? `Selected Coordinates: ${selectedCoords.lat}, ${selectedCoords.lng}`
+                : ""
+            }
+          />
+          <MapEvents />
+          {position !== null && (
+            <Marker position={position} icon={icons.selected} />
+          )}
+          {showMarkers &&
+            markers &&
+            position &&
+            markers
+              .slice(1)
+              .map((item, index) => (
+                <Circle center={position} radius={5000} fillOpacity={0.02} />
+              ))}
+          {showMarkers &&
+            markers &&
+            position &&
+            markers
+              .slice(1)
+              .map((item, index) => (
+                <Marker
+                  key={index}
+                  position={[item.latitude, item.longitude]}
+                  icon={icons[item.year]}
+                />
+              ))}
+        </MapContainer>
+        <div className={styles.solution}>{showMarkers && <Legend />}</div>
+      </div>
+    </div>
   );
 };
 
