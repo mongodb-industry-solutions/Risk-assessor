@@ -11,7 +11,7 @@ function Header() {
         <MongoDBLogoMark />
       </div>
       <div className={styles["title-container"]}>
-        <H2>Business loan risk assessor </H2>
+        <H2>Business Loan Risk Assessor </H2>
       </div>
     </div> 
 

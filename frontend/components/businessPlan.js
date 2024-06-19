@@ -67,7 +67,7 @@ function BusinessPlan() {
   };
 
   const sendPromptToFireworks = async (prompt) => {
-    const response = await fetch("https://api.fireworks.ai/inference/v1/chat/completions", {
+    const response = await fetch(`https://api.fireworks.ai/inference/v1/chat/completions`, {
       method: "POST",
       headers: {
         "Accept": "application/json",
@@ -183,14 +183,14 @@ Overall, Urban Cycle Fitness presents a moderate risk profile, with potential op
     await setValue("... loading example ...");
     const prompt = `
     Instructions:
-    - You will be stepping in the shoes of a person with a businaess idea. Which you will pitch, however avoid using introductory phrases like "Here is a business idea:".
+    - You will be stepping in the shoes of a person with a business idea. Which you will pitch, however avoid using introductory phrases like "Here is a business idea:".
     - This business idea has to have a physical real estate location in the USA. Do not provide a location however as this will be done seperatly.
     - Make sure the provide a business description, why does it want a loan and how is it planning on using it on.
     - If there are some risk, that you are aware of, mention them. 
-    - Avoid reusing the same business idea. 
+    - Avoid reusing the "EcoCycle" business idea or the same business idea twice.
     - Don't use more than 150 words.
 
-    Usefull example:
+    Useful example:
     John’s Bakery is a new, upscale bakery focusing on providing organic, healthy and/or premium food products. Our product line fits nicely with health trends nationwide – while people still want pastries and baked goods, they want them to be as healthy as possible. 
 John’s Bakery is currently seeking $370,000 to launch. Specifically, these funds will be used as follows:
 • Store design/build: $250,000
@@ -207,7 +207,7 @@ John’s Bakery is currently seeking $370,000 to launch. Specifically, these fun
   return (
     <div style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
       <TextArea
-        style={{ minWidth: '600px', minHeight: '300px' }}
+        style={{ minWidth: '600px', minHeight: '190px' }}
         onChange={event => {
           setValue(event.target.value);
         }}
