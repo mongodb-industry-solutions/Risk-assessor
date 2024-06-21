@@ -3,7 +3,7 @@ import dynamic from "next/dynamic";
 import styles from "../styles/Home.module.css";
 import Header from "../components/Header";
 import Avatar from "../components/Avatar";
-import React from "react";
+import React, { useEffect } from 'react';
 import BusinessPlan from "../components/businessPlan";
 import { MarkersProvider, useMarkers } from "../context/Markers";
 import { H2, Body } from "@leafygreen-ui/typography";
@@ -44,8 +44,11 @@ function LoadingContainer() {
     }
   });
 
-  const title =
-    llmResponse !== "" ? <H2>Assessor's response</H2> : <H2>Instructions</H2>;
+  useEffect(() => {
+    if (loading) {
+      window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+    }
+  }, [loading]);
 
   return (
     <div className={styles.container}>
