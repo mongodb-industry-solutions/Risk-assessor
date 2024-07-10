@@ -14,7 +14,7 @@ const Map = dynamic(() => import("../components/Map"), { ssr: false });
 function LoadingContainer() {
   const { loading, llmResponse, markers } = useMarkers();
   const intro =
-    "Welcome to the leafy business loan risk assessor, it assumes the scenario of an application for a business loan to start/expand a business that requires a physical real estate (eg. a bakery shop, restaurant, etc). \n 1. Please indicate the business location of you real estate. \n 2. Please provide a brief description of your loan purpose and business plan. \n 3. Please scroll down to see the response after submission.";
+    "Welcome to the leafy business loan risk assessor, it assumes the scenario of an application for a business loan to start/expand a business that requires a physical real estate (eg. a bakery shop, restaurant, etc). \n 1. Please indicate the business location of your real estate. \n 2. Please provide a brief description of your loan purpose and business plan. \n 3. Please scroll down to see the response after submission.";
   const parts = llmResponse.split(/\*\*(.*?)\*\*/g);
 
   const introParagraphs = intro.split("\n").map((line, index) => (
@@ -105,9 +105,7 @@ function LoadingContainer() {
               weight={"medium"}
               style={{ marginTop: "5px" }}
             >
-              Please provide a couple dozen words describing of your loan
-              purpose and business plan. Feel free to use our speech to text
-              functionality or the example button to generate a input.
+              Please provide a brief description of your loan purpose and business plan.
             </Body>
             <BusinessPlan />
           </div>

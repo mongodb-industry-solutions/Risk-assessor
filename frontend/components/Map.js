@@ -147,6 +147,7 @@ const Map = ({ coordinates }) => {
     "1633 Broadway 38th floor, New York, NY 10019, United States";
   const MDBCali =
     "88 Kearny St Suite 500, San Francisco, CA 94108, United States";
+  const RdmAddress = "1633 Broadway 38th floor, New York, NY 10019, United States";
 
   return (
     <div className={styles.mapContainer}>
@@ -196,6 +197,21 @@ const Map = ({ coordinates }) => {
             }}
           >
             {MDBCali}
+          </SearchResult>
+          <SearchResult
+            description="random address with no flood risk"
+            onClick={() => {
+              fetchCoordinates(RdmAddress).then((coords) => {
+                if (coords) {
+                  setPosition(coords);
+                  handleMapClick(coords);
+                  setZoom(18);
+                  setAddress(RdmAddress);
+                }
+              });
+            }}
+          >
+            {RdmAddress}
           </SearchResult>
         </SearchInput>
         {llmResponse !== "" && (
