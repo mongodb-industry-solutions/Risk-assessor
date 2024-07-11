@@ -143,11 +143,12 @@ const Map = ({ coordinates }) => {
     [49.384358, -66.93457],
   ];
 
-  const MDBheadquarters =
-    "1633 Broadway 38th floor, New York, NY 10019, United States";
-  const MDBCali =
+  const Headquarters =
+    "1634 Broadway 1st floor, New York, NY 10019, United States";
+  const Cali =
     "88 Kearny St Suite 500, San Francisco, CA 94108, United States";
-  const RdmAddress = "1633 Broadway 38th floor, New York, NY 10019, United States";
+  const Texas = 
+    "201 Lily Trail, Red Oak, TX 75154, USA";
 
   return (
     <div className={styles.mapContainer}>
@@ -169,49 +170,49 @@ const Map = ({ coordinates }) => {
           }}
         >
           <SearchResult
-            description="MDB Headquarters"
+            description="Leafy tower"
             onClick={() => {
-              fetchCoordinates(MDBheadquarters).then((coords) => {
+              fetchCoordinates(Headquarters).then((coords) => {
                 if (coords) {
                   setPosition(coords);
                   handleMapClick(coords);
                   setZoom(18);
-                  setAddress(MDBheadquarters);
+                  setAddress(Headquarters);
                 }
               });
             }}
           >
-            {MDBheadquarters}
+            {Headquarters}
           </SearchResult>
           <SearchResult
-            description="MDB California office"
+            description="Leafy California office"
             onClick={() => {
-              fetchCoordinates(MDBCali).then((coords) => {
+              fetchCoordinates(Cali).then((coords) => {
                 if (coords) {
                   setPosition(coords);
                   handleMapClick(coords);
                   setZoom(18);
-                  setAddress(MDBCali);
+                  setAddress(Cali);
                 }
               });
             }}
           >
-            {MDBCali}
+            {Cali}
           </SearchResult>
           <SearchResult
-            description="random address with no flood risk"
+            description="Leafy Texas office"
             onClick={() => {
-              fetchCoordinates(RdmAddress).then((coords) => {
+              fetchCoordinates(Texas).then((coords) => {
                 if (coords) {
                   setPosition(coords);
                   handleMapClick(coords);
                   setZoom(18);
-                  setAddress(RdmAddress);
+                  setAddress(Texas);
                 }
               });
             }}
           >
-            {RdmAddress}
+            {Texas}
           </SearchResult>
         </SearchInput>
         {llmResponse !== "" && (
