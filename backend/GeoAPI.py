@@ -87,7 +87,7 @@ def rev_geocode(latitude: float, longitude: float, api_key: str) -> str:
 def get_address(latitude: float, longitude: float):
     try:
         address = rev_geocode(latitude, longitude, GOOGLE_API_KEY)
-        print(address)
+        #print(address)
         return {"address": address}
     except Exception as e:
         return {"error": str(e)}
@@ -140,9 +140,9 @@ async def get_coordinates(address: Address):
             {"$match": {"year": {"$gte": 2016}}},
             {"$sort": { "year":-1, "DISTANCE":1 } }, 
         ]
-        print(pipeline)
+        #print(pipeline)
         documents = list(col.aggregate(pipeline))
-        print(documents)
+        #print(documents)
         response = [{
             "longitude": longitude,
             "latitude": latitude
@@ -164,9 +164,9 @@ async def get_data(latitude: float, longitude: float):
             {"$match": {"year": {"$gte": 2016}}},
             {"$sort": { "year":-1, "DISTANCE":1 } }, 
         ]
-        print(pipeline)
+        #print(pipeline)
         documents = list(col.aggregate(pipeline))
-        print(documents)
+        #print(documents)
         response = [{
             "longitude": longitude,
             "latitude": latitude

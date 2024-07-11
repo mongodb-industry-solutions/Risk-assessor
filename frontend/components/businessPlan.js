@@ -87,7 +87,7 @@ function BusinessPlan() {
     });
   
     const data = await response.json();
-    console.log('data:', data);
+    //console.log('data:', data);
     //setLlmResponse(data.choices[0].message.content);
     setLoading(false);
     return data.choices[0].message.content;
@@ -172,10 +172,10 @@ Projected Annual Profit: $120,000
 
 Overall, Urban Cycle Fitness presents a moderate risk profile, with potential opportunities for growth in the Gilbert area. However, the business should consider investing in flood insurance to mitigate potential environmental risks.
     `
-    console.log('prompt:',prompt);
+    //console.log('prompt:',prompt);
     /* sendPromptToGpt3(prompt); */
     const response = await sendPromptToFireworks(prompt);
-    console.log('response:',response);
+    //console.log('response:',response);
     await setLlmResponse(response);
   };
 

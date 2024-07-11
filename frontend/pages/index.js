@@ -71,7 +71,7 @@ function LoadingContainer() {
             <H2>Instructions</H2>
             {introParagraphs}
           </div>
-          <Avatar src="/userAvatar.png" />
+          <Avatar />
         </div>
         <div
           style={{
