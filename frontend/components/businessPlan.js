@@ -80,7 +80,7 @@ function BusinessPlan() {
         top_p: 1,
         top_k: 40,
         presence_penalty: 0,
-        frequency_penalty: 0,
+        frequency_penalty: 1,
         temperature: 0.1,
         messages:[{ content: prompt, role: "user"}]
         }),
@@ -115,6 +115,7 @@ function BusinessPlan() {
     - Above all, analyse the impact of any environmental risks represented by the flood data provided. Describe the context given to you in the inputs as this is not information that the end user has. However, avoid expressions "The data", instead mention the sources of the flood data (not necesarily listing all of them).
     - Floods that are close and recent suggest a high risk of flooding. Floods over 5 kilometers away and old  suggest a low risk. However the number of floods can be a mitigating or aggravating factor.
     - Use kms as the distance unit
+    - Avoid using more than 450 words.
        
     Definitions:
     Business Description: A short description with a retail business idea.
