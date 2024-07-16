@@ -80,7 +80,7 @@ function BusinessPlan() {
         top_p: 1,
         top_k: 40,
         presence_penalty: 0,
-        frequency_penalty: 0,
+        frequency_penalty: 1,
         temperature: 0.1,
         messages:[{ content: prompt, role: "user"}]
         }),
