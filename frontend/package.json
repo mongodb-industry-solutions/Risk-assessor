@@ -18,7 +18,6 @@
     "@leafygreen-ui/skeleton-loader": "^1.2.0",
     "@leafygreen-ui/text-area": "^9.1.0",
     "@leafygreen-ui/typography": "^19.1.1",
-    "axios": "^1.7.2",
     "leaflet": "^1.9.4",
     "next": "14.2.3",
     "react": "^18",
