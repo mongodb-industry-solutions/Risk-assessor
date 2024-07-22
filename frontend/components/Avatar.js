@@ -17,8 +17,12 @@ useEffect(() => {
     if(videoRef.current.src.includes('Avatar_intro.mp4'))
         return
     videoRef.current.src = 'Avatar_intro.mp4';
-    videoRef.current.play()
-    videoRef.current.muted = false;
+    var playPromise = videoRef.current.play();
+    playPromise.then(() => {
+      // if uncomment it will through:
+      //muting failed and the element was paused instead because the user didn't interact with the document before 
+      //videoRef.current.muted = false
+    })
     videoRef.current.addEventListener("ended", playIdleVideo)
   })
 }, [])
