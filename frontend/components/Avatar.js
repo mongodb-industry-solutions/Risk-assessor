@@ -1,94 +1,45 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useMarkers } from "../context/Markers";
+import { connectTalkStream, destroyStream, playIdleVideo, setRTCPeerConnection, startTalkStream } from '@/handlers/avatar';
 
 
 const Avatar = () => {
-  const { llmResponse } = useMarkers();
-  const videoSources = ['Avatar_idle.mp4', 'Avatar_intro.mp4', 'Avatar_idle2.mp4'];
-  const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
+  const { llmResponse, setLoading } = useMarkers();
   const videoRef = useRef(null);
 
-  const handleVideoEnd = () => {
-    setCurrentVideoIndex((currentVideoIndex + 1) % videoSources.length);
-  };
-
-  const handleUserInteraction = () => {
-    if (videoRef.current.paused) {
-      videoRef.current.play().then(() => {
-        if (videoSources[currentVideoIndex] !== 'Avatar_idle.mp4') {
-          videoRef.current.muted = false;
-        }
-      }).catch(error => {
-        console.error('Autoplay was prevented:', error);
-      });
-    }
-  };
 
 useEffect(() => {
-  const videoSrc = videoSources[currentVideoIndex];
-  videoRef.current.src = videoSrc;
-  videoRef.current.muted = true; // Start muted
-  videoRef.current.loop = videoSrc === 'Avatar_idle2.mp4';
-  
-  videoRef.current.play().then(() => {
-    if (videoSrc !== 'Avatar_idle.mp4') {
-      videoRef.current.muted = false; // Unmute after playback starts
-    }
-  }).catch(error => {
-    console.error('Autoplay was prevented:', error);
-  });
+  console.log('USE EFFECT 1')
+  setRTCPeerConnection();
+  connectTalkStream()
+  .then(res => {
+    //console.log('connectTalkStream response ', videoRef.current.src, res)
+    if(videoRef.current.src.includes('Avatar_intro.mp4'))
+        return
+    videoRef.current.src = 'Avatar_intro.mp4';
+    var playPromise = videoRef.current.play();
+    playPromise.then(() => {
+      // if uncomment it will through:
+      //muting failed and the element was paused instead because the user didn't interact with the document before 
+      //videoRef.current.muted = false
+    })
+    videoRef.current.addEventListener("ended", playIdleVideo)
+  })
+}, [])
 
-  document.addEventListener('click', handleUserInteraction);
-  
-  return () => {
-    document.removeEventListener('click', handleUserInteraction);
-  };
-}, [currentVideoIndex]);
 
 useEffect(() => {
+  console.log('USE EFFECT 2')
   if (llmResponse !== null && llmResponse !== '') {
-    console.log('llmResponse:', llmResponse);
     const cleanedLlmResponse = llmResponse.replace(/\*/g, '');
-    fetch('https://api.d-id.com/talks', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Basic ${process.env.NEXT_PUBLIC_D_ID_API_KEY}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        source_url: 'https://fsi-avatars.s3.amazonaws.com/Avatar.png',
-        script: {
-          type: 'text',
-          input: cleanedLlmResponse
-        }
-      })
-    })
-    .then(response => response.json())
-    .then(data => {
-      console.log(data);
-      const id = data.id;
+    console.log('llmResponse:', cleanedLlmResponse);
+    startTalkStream(cleanedLlmResponse)
+    .then(res => {setLoading(false);})
 
-      return new Promise(resolve => setTimeout(resolve, 2000))
-        .then(() => fetch(`https://api.d-id.com/talks/${id}`, {
-          method: 'GET',
-          headers: {
-            'Authorization': `Basic ${process.env.NEXT_PUBLIC_D_ID_API_KEY}`,
-          },
-        }));
-    })
-    .then(response => response.json())
-    .then(data => {
-      console.log(data);
-      const resultUrl = data.result_url;
-      videoRef.current.src = resultUrl;
-      videoRef.current.muted = false;
-      videoRef.current.play().catch(error => {
-        console.error('Error playing video:', error);
-      });
-    })
-    .catch((error) => {
-      console.error('Error:', error);
-    });
+    return () => {
+      console.log('clean component destroyStream')
+      destroyStream()
+    };
   }
 }, [llmResponse]);
 
@@ -98,12 +49,17 @@ useEffect(() => {
       justifyContent: 'center', 
       alignItems: 'center', 
     }}>
-      <video 
-        ref={videoRef}
-        autoPlay 
-        onEnded={handleVideoEnd} 
-        style={{ maxWidth: '510px', maxHeight: '510px' }} 
-      />
+      <div>
+          <video 
+            id="stream-video-element" 
+            width="400" 
+            height="400" 
+            autoPlay muted
+            src='Avatar_idle.mp4'
+            playsInline=""
+            ref={videoRef}
+          ></video>
+        </div>
     </div>
   );
 };
