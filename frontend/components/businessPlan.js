@@ -89,7 +89,7 @@ function BusinessPlan() {
     const data = await response.json();
     //console.log('data:', data);
     //setLlmResponse(data.choices[0].message.content);
-    setLoading(false);
+    //setLoading(false);
     return data.choices[0].message.content;
   };
 
