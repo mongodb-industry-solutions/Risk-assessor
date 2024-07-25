@@ -21,11 +21,11 @@ The tech stack is :
 
 To install the demo please follow these steps:
 
-### - [Create an Atlas Account](https://www.mongodb.com/docs/atlas/tutorial/create-atlas-account/)
-### - [Create a **dedicated** cluster](https://www.mongodb.com/docs/atlas/tutorial/create-new-cluster/)
-### - [Setup the dataset and backend](./backend/)
-### - [Installation of the frontend](./frontend/)
-### - Executing the demo with docker
+- [Create an Atlas Account](https://www.mongodb.com/docs/atlas/tutorial/create-atlas-account/)
+- [Create a **dedicated** cluster](https://www.mongodb.com/docs/atlas/tutorial/create-new-cluster/)
+- [Setup the dataset and backend](./backend/)
+- [Installation of the frontend](./frontend/)
+- Executing the demo with docker
 
 To build the Docker images and start the services, run the following command:
 
@@ -52,7 +52,7 @@ Are you prepared to harness these capabilities for your projects? Should you enc
 
 You can also dive into the following resources:
 
-- [Assessing Business Loan Risks with MongoDB Multimodal Capabilities and GenAI](https://docs.google.com/document/d/1CdSKK7aYLl-HrRhYriaYbudp-UepfojKD-Iy1uNYu64/edit)
+- [Assessing Business Loan Risks with MongoDB Multimodal Capabilities and GenAI](https://docs.google.com/document/d/1CdSKK7aYLl-HrRhYriaYbudp-UepfojKD-Iy1uNYu64/edit) - Link to be updated
 
 ## Disclaimer
 
