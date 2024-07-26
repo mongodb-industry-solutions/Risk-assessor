@@ -12,9 +12,10 @@ The tech stack is :
 - [Docker desktop](https://www.docker.com/products/docker-desktop/) (optional)
 - Google Maps API
 - [Fireworks.ia](https://fireworks.ai/)
+- [De-identification](https://www.d-id.com/)
 
 > [!Warning]
-> This demo uses several **paying services** which are not included in the deom such as : Geospacial indexes in MongoDB and Google's [Reverse geocoding APIs](https://developers.google.com/maps/documentation/geocoding/requests-reverse-geocoding).
+> This demo uses several **paying services** which are not included in the deom such as : Geospacial indexes in MongoDB, [Google's Reverse geocoding APIs](https://developers.google.com/maps/documentation/geocoding/requests-reverse-geocoding) and [D-ID's talk streams](https://docs.d-id.com/reference/startconnection).
 > Also this demo uses Fireworks.ai's LLMs, and therefore will need an API key, which you can get by signing up for free with your Google account [here](https://fireworks.ai/login). 
 
 ## Installation of the Demo
@@ -61,4 +62,5 @@ This product is not a MongoDB official product. Use at your own risk!
 ## Authors
 
 - Wei You Pan, Global Director, Financial Industry Solutions, MongoDB
+- Angie Guemes, Senior Specialist, Industry Solutions, MongoDB
 - Paul Claret, Senior Specialist for Financial Services, Industry Solutions, MongoDB

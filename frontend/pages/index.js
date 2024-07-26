@@ -13,36 +13,8 @@ const Map = dynamic(() => import("../components/Map"), { ssr: false });
 
 function LoadingContainer() {
   const { loading, llmResponse, markers } = useMarkers();
-  const intro =
-    "Welcome to the leafy business loan risk assessor, it assumes the scenario of an application for a business loan to start/expand a business that requires a physical real estate (eg. a bakery shop, restaurant, etc). \n 1. Please indicate the business location of your real estate. \n 2. Please provide a brief description of your loan purpose and business plan. \n 3. Please scroll down to see the response after submission.";
   const parts = llmResponse.split(/\*\*(.*?)\*\*/g);
-
-  const introParagraphs = intro.split("\n").map((line, index) => (
-    <Body baseFontSize={16} key={index} style={{ marginTop: "5px" }}>
-      {line}
-    </Body>
-  ));
-
-  const paragraphs = parts.map((part, index) => {
-    if (index % 2 === 0) {
-      return (
-        <Body baseFontSize={16} key={index} style={{ marginTop: "5px" }}>
-          {part}
-        </Body>
-      );
-    } else {
-      return (
-        <Body
-          baseFontSize={16}
-          weight={"medium"}
-          key={index}
-          style={{ marginTop: "5px" }}
-        >
-          {part}
-        </Body>
-      );
-    }
-  });
+  
 
   useEffect(() => {
     if (loading) {
@@ -67,10 +39,6 @@ function LoadingContainer() {
             gridTemplateRows: "auto 1fr",
           }}
         >
-          <div style={{ margin: "10px 0px 0px 10px" }}>
-            <H2>Instructions</H2>
-            {introParagraphs}
-          </div>
           <Avatar />
         </div>
         <div
