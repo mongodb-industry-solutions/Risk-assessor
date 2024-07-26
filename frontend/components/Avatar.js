@@ -7,10 +7,16 @@ import IconButton from "@leafygreen-ui/icon-button";
 import { H2, Body } from "@leafygreen-ui/typography";
 
 
+
+
 const Avatar = () => {
   const { llmResponse, setLoading } = useMarkers();
   const videoRef = useRef(null);
-  const [isIntroPlaying, setIsIntroPlaying] = useState(false);
+  const [videoState, setVideoState] = useState({
+    sdpResponse: null, //this will be true if we connected successfully to D-ID plugin (200 code)
+    isIntroPlaying: false, // 
+    isDidPlaying: false, // 
+  });
 
   const intro =
     "Welcome to the leafy business loan risk assessor, it assumes the scenario of an application for a business loan to start/expand a business that requires a physical real estate (eg. a bakery shop, restaurant, etc). \n 1. Please indicate the business location of your real estate. \n 2. Please provide a brief description of your loan purpose and business plan. \n 3. Please scroll down to see the response after submission.";
@@ -22,6 +28,15 @@ const Avatar = () => {
     </Body>
   ));
 
+  const onVideoFinishHnd = () => {
+    playIdleVideo()
+    setVideoState({
+      ...videoState,
+      isDidPlaying: false,
+      isIntroPlaying: false
+    })
+  }
+
 useEffect(() => {
   console.log('USE EFFECT 1') 
   videoRef.current.src = 'Avatar_idle.mp4';
@@ -30,15 +45,17 @@ useEffect(() => {
   connectTalkStream()
   .then(res => {
     //console.log('connectTalkStream response ', videoRef.current.src, res)
-    // if(videoRef.current.src.includes('Avatar_intro.mp4'))
-    //     return
-    var playPromise = videoRef.current.play();
-    playPromise.then(() => {
-      // if uncomment it will through:
-      //muting failed and the element was paused instead because the user didn't interact with the document before 
-      //videoRef.current.muted = false
+    setVideoState({
+      ...videoState,
+      sdpResponse: res.sdpResponse.status === 200
     })
-    videoRef.current.addEventListener("ended", playIdleVideo)
+    videoRef.current.addEventListener("ended", onVideoFinishHnd)
+  })
+  .catch(err => {
+    setVideoState({
+      ...videoState,
+      sdpResponse: false
+    })
   })
 }, [])
 
@@ -49,7 +66,19 @@ useEffect(() => {
     const cleanedLlmResponse =  "  " + llmResponse.replace(/\*/g, '');
     console.log('llmResponse:', cleanedLlmResponse);
     startTalkStream(cleanedLlmResponse)
-    .then(res => {setLoading(false);})
+    .then(res => { // then will be called after D-DID stream has been created
+      setLoading(false);
+      setVideoState({
+        ...videoState,
+        isDidPlaying: true
+      })
+    })  
+    .catch(err => {
+      setVideoState({
+        ...videoState,
+        isDidPlaying: false,
+      })
+    })
     return () => {
       console.log('clean component destroyStream')
       destroyStream()
@@ -58,17 +87,18 @@ useEffect(() => {
 }, [llmResponse]);
 
 const handleButtonClick = () => {
-  if (isIntroPlaying) {
+  if (videoState.isIntroPlaying) {
     // If intro is currently playing, switch to idle
     videoRef.current.src = 'Avatar_idle.mp4';
     videoRef.current.loop = true;
   } else {
     // If idle is currently playing, switch to intro
     videoRef.current.src = 'Avatar_intro.mp4';
-    videoRef.current.muted = false; // Assuming you don't want the intro to loop
+    videoRef.current.loop = false;
+    videoRef.current.muted = false;
   }
   videoRef.current.play().catch(error => console.error("Video play failed", error));
-  setIsIntroPlaying(!isIntroPlaying); // Toggle the state
+  setVideoState({...videoState, isIntroPlaying: !videoState.isIntroPlaying}); // Toggle the state
 };
 
 return (
@@ -79,8 +109,13 @@ return (
       alignItems: 'left', 
     }}>
       <H2>Instructions</H2>
-      <IconButton aria-label="Play" style={{ margin: '8px 5px'}} onClick={handleButtonClick}>
-        {isIntroPlaying ? <Stop /> : <Play />}
+      <IconButton 
+        aria-label="Play" 
+        style={{ margin: '8px 5px'}} 
+        disabled={videoState.isDidPlaying} 
+        onClick={handleButtonClick}
+      >
+        {videoState.isIntroPlaying ? <Stop /> : <Play />}
       </IconButton>
     </div>
     <div>
@@ -99,6 +134,7 @@ return (
         src='Avatar_idle.mp4'
         playsInline=""
         ref={videoRef}
+        
       />
     </div>
   </div>

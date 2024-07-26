@@ -15,6 +15,26 @@ function LoadingContainer() {
   const { loading, llmResponse, markers } = useMarkers();
   const parts = llmResponse.split(/\*\*(.*?)\*\*/g);
   
+  const paragraphs = parts.map((part, index) => {
+    if (index % 2 === 0) {
+      return (
+        <Body baseFontSize={16} key={index} style={{ marginTop: "5px" }}>
+          {part}
+        </Body>
+      );
+    } else {
+      return (
+        <Body
+          baseFontSize={16}
+          weight={"medium"}
+          key={index}
+          style={{ marginTop: "5px" }}
+        >
+          {part}
+        </Body>
+      );
+    }
+  });
 
   useEffect(() => {
     if (loading) {
