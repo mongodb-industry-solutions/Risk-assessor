@@ -54,9 +54,8 @@ function LoadingContainer() {
             style={{ width: "95%", height: "50%" }}
           >
             <Body
-              baseFontSize={16}
               weight={"medium"}
-              style={{ marginTop: "5px" }}
+              style={{ marginTop: "5px", marginBottom: "5px", fontSize : "20px" }}
             >
               Please indicate the business location in the USA for your real
               estate by clicking on the map, or entering the addess on the
@@ -69,9 +68,8 @@ function LoadingContainer() {
             style={{ width: "95%", height: "50%" }}
           >
             <Body
-              baseFontSize={16}
               weight={"medium"}
-              style={{ marginTop: "5px" }}
+              style={{ marginTop: "5px", marginBottom: "5px", fontSize : "20px" }}
             >
               Please provide a brief description of your loan purpose and business plan.
             </Body>

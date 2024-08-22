@@ -17,7 +17,7 @@ const Avatar = () => {
   
 
   const introParagraphs = intro.split("\n").map((line, index) => (
-    <Body baseFontSize={16} key={index} style={{ marginTop: "5px" }}>
+    <Body key={index} style={{ marginTop: "5px",fontSize : "18px" }} >
       {line}
     </Body>
   ));
