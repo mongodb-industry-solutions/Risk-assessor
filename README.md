@@ -14,8 +14,11 @@ The tech stack is :
 - [Fireworks.ia](https://fireworks.ai/)
 
 > [!Warning]
-> This demo uses several **paying services** which are not included in the deom such as : Geospacial indexes in MongoDB and Google's [Reverse geocoding APIs](https://developers.google.com/maps/documentation/geocoding/requests-reverse-geocoding).
+> This demo uses several **paying services** which are not included in the demo such as : Geospacial indexes in MongoDB and Google's [Reverse geocoding APIs](https://developers.google.com/maps/documentation/geocoding/requests-reverse-geocoding).
 > Also this demo uses Fireworks.ai's LLMs, and therefore will need an API key, which you can get by signing up for free with your Google account [here](https://fireworks.ai/login). 
+
+> [!Note]
+> This branch does not include the avatar logic. If you are interested of seeing D-ID is a generative AI-powered interactions and content creation platform. Please go to our other [Github branch](https://github.com/mongodb-industry-solutions/Risk-assessor/tree/Avatar) which includes the avatar logic.
 
 ## Installation of the Demo
 
