@@ -15,6 +15,25 @@ function LoadingContainer() {
   const { loading, llmResponse, markers } = useMarkers();
   const parts = llmResponse.split(/\*\*(.*?)\*\*/g);
   
+  const paragraphs = parts.map((part, index) => {
+    if (index % 2 === 0) {
+      return (
+        <Body key={index} style={{ marginTop: "5px", fontSize : "20px" }}>
+          {part}
+        </Body>
+      );
+    } else {
+      return (
+        <Body
+          weight={"medium"}
+          key={index}
+          style={{ marginTop: "5px", fontSize : "20px" }}
+        >
+          {part}
+        </Body>
+      );
+    }
+  });
 
   useEffect(() => {
     if (loading) {
@@ -96,9 +115,8 @@ function LoadingContainer() {
           <div className={styles.loadingContainer} style={{ height: "100%" }}>
             <H2>Assessor's response</H2>
             <Body
-              baseFontSize={16}
               weight={"medium"}
-              style={{ marginTop: "5px" }}
+              style={{ marginTop: "5px", fontSize : "20px" }}
             >
               {paragraphs}
             </Body>
