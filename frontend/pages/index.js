@@ -18,7 +18,7 @@ function LoadingContainer() {
   const parts = llmResponse.split(/\*\*(.*?)\*\*/g);
 
   const introParagraphs = intro.split("\n").map((line, index) => (
-    <Body key={index} style={{ marginTop: "5px", fontSize : "20px" }}>
+    <Body key={index} style={{ marginTop: "5px", fontSize: "20px" }}>
       {line}
     </Body>
   ));
@@ -26,7 +26,7 @@ function LoadingContainer() {
   const paragraphs = parts.map((part, index) => {
     if (index % 2 === 0) {
       return (
-        <Body key={index} style={{ marginTop: "5px", fontSize : "20px" }}>
+        <Body key={index} style={{ marginTop: "5px", fontSize: "16px" }}>
           {part}
         </Body>
       );
@@ -35,7 +35,7 @@ function LoadingContainer() {
         <Body
           weight={"medium"}
           key={index}
-          style={{ marginTop: "5px", fontSize : "20px" }}
+          style={{ marginTop: "5px", fontSize: "16px" }}
         >
           {part}
         </Body>
@@ -66,9 +66,19 @@ function LoadingContainer() {
             gridTemplateRows: "auto 1fr",
           }}
         >
-          <div style={{ margin: "10px 0px 0px 10px" }}>
+          <div style={{ margin: "10px 0px 0px 00px"}}>
             <H2>Instructions</H2>
-            {introParagraphs}
+
+            <Body style={{fontSize: "16px", marginTop: "20px"}}>Welcome to the Leafy Business Loan Risk assessor, it assumes the scenario of an application for a business loan to start/expand a business that requires a physical real estate (eg. a bakery shop, restaurant, etc).</Body>
+
+
+            <ol>
+              <li> <Body style={{fontSize: "16px", marginBottom: "10px"}}>Please indicate the business location of your real estate.</Body></li>
+              <li> <Body style={{fontSize: "16px", marginBottom: "10px"}}>Please provide a brief description of your loan purpose and business plan.</Body></li>
+              <li> <Body style={{fontSize: "16px", marginBottom: "10px"}}>Please scroll down to see the response after submission.</Body></li>
+             
+            </ol>
+
           </div>
           <Avatar src="/userAvatar.png" />
         </div>
@@ -86,12 +96,13 @@ function LoadingContainer() {
           >
             <Body
               weight={"medium"}
-              style={{ marginTop: "5px", marginBottom: "5px", fontSize : "20px" }}
+              style={{marginBottom: "15px", fontSize: "16px" }}
             >
               Please indicate the business location in the USA for your real
               estate by clicking on the map, or entering the addess on the
               search bar.
             </Body>
+
             <Map />
           </div>
           <div
@@ -100,7 +111,7 @@ function LoadingContainer() {
           >
             <Body
               weight={"medium"}
-              style={{ marginTop: "5px", marginBottom: "5px", fontSize : "20px" }}
+              style={{ marginBottom: "15px", fontSize: "16px" }}
             >
               Please provide a brief description of your loan purpose and business plan.
             </Body>
@@ -127,8 +138,8 @@ function LoadingContainer() {
           <div className={styles.loadingContainer} style={{ height: "100%" }}>
             <H2>Assessor's response</H2>
             <Body
-              weight={"medium"}
-              style={{ marginTop: "5px", fontSize : "20px" }}
+              weight={"normal"}
+              style={{ marginTop: "5px", fontSize: "16px" }}
             >
               {paragraphs}
             </Body>
