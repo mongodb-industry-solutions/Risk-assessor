@@ -66,18 +66,16 @@ function LoadingContainer() {
             gridTemplateRows: "auto 1fr",
           }}
         >
-          <div style={{ margin: "10px 0px 0px 00px"}}>
+          <div style={{ margin: "10px 0px 0px 00px" }}>
             <H2>Instructions</H2>
 
-            <Body style={{fontSize: "16px", marginTop: "20px"}}>Welcome to the Leafy Business Loan Risk assessor, it assumes the scenario of an application for a business loan to start/expand a business that requires a physical real estate (eg. a bakery shop, restaurant, etc).</Body>
+            <Body style={{ fontSize: "16px", marginTop: "20px", marginBottom: "20px" }}>Welcome to the Leafy Business Loan Risk assessor, it assumes the scenario of an application for a business loan to start/expand a business that requires a physical real estate (eg. a bakery shop, restaurant, etc).</Body>
+
+            <Body style={{ fontSize: "16px", marginBottom: "10px" }}>1. Please indicate the business location of your real estate. </Body>
+            <Body style={{ fontSize: "16px", marginBottom: "10px" }}>2.  Please provide a brief description of your loan purpose and business plan. </Body>
+            <Body style={{ fontSize: "16px", marginBottom: "10px" }}>3.   Please scroll down to see the response after submission. </Body>
 
 
-            <ol>
-              <li> <Body style={{fontSize: "16px", marginBottom: "10px"}}>Please indicate the business location of your real estate.</Body></li>
-              <li> <Body style={{fontSize: "16px", marginBottom: "10px"}}>Please provide a brief description of your loan purpose and business plan.</Body></li>
-              <li> <Body style={{fontSize: "16px", marginBottom: "10px"}}>Please scroll down to see the response after submission.</Body></li>
-             
-            </ol>
 
           </div>
           <Avatar src="/userAvatar.png" />
@@ -96,7 +94,7 @@ function LoadingContainer() {
           >
             <Body
               weight={"medium"}
-              style={{marginBottom: "15px", fontSize: "16px" }}
+              style={{ marginBottom: "15px", fontSize: "16px" }}
             >
               Please indicate the business location in the USA for your real
               estate by clicking on the map, or entering the addess on the
