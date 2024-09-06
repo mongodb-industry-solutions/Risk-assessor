@@ -15,11 +15,9 @@ The tech stack is :
 - [De-identification](https://www.d-id.com/)
 
 > [!Warning]
+> The Avatar uses D-ID, which is a generative AI-powered interactions and content creation platform. While being remarkable and very eye-catching it is a paying service that doesn’t use MongoDB. We therefore the main [Github branch](https://github.com/mongodb-industry-solutions/Risk-assessor/tree/main) is without the avatar.
 > This demo uses several **paying services** which are not included in the demo such as : Geospacial indexes in MongoDB, [Google's Reverse geocoding APIs](https://developers.google.com/maps/documentation/geocoding/requests-reverse-geocoding) and [D-ID's talk streams](https://docs.d-id.com/reference/startconnection).
 > Also this demo uses Fireworks.ai's LLMs, and therefore will need an API key, which you can get by signing up for free with your Google account [here](https://fireworks.ai/login). 
-
-> [!Note]
-> D-ID is a generative AI-powered interactions and content creation platform. This is the platform that avatar logic was built on. While being remarkable and very eye-catching it is a paying service that doesn’t use MongoDB. We therefore added another [Github branch](https://github.com/mongodb-industry-solutions/Risk-assessor/tree/main) which excluded the avatar logic.
 
 ## Installation of the Demo
 
