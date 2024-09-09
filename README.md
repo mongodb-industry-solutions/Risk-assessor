@@ -5,7 +5,7 @@ Business loans are a cornerstone of banking operations, providing significant be
 
 ### Requirements
 
-The tech stack is :
+The tech stack is :Geospatial
 - Node JS microservices server/s
 - Python 3
 - MongoDB Atlas/Enterprise
@@ -14,7 +14,7 @@ The tech stack is :
 - [Fireworks.ia](https://fireworks.ai/)
 
 > [!Warning]
-> This demo uses several **paying services** which are not included in the demo such as : Geospacial indexes in MongoDB and Google's [Reverse geocoding APIs](https://developers.google.com/maps/documentation/geocoding/requests-reverse-geocoding).
+> This demo uses several **paying services** which are not included in the demo such as : Google's [Reverse geocoding APIs](https://developers.google.com/maps/documentation/geocoding/requests-reverse-geocoding).
 > Also this demo uses Fireworks.ai's LLMs, and therefore will need an API key, which you can get by signing up for free with your Google account [here](https://fireworks.ai/login). 
 
 > [!Note]
@@ -24,8 +24,7 @@ The tech stack is :
 
 To install the demo please follow these steps:
 
-- [Create an Atlas Account](https://www.mongodb.com/docs/atlas/tutorial/create-atlas-account/)
-- [Create a **dedicated** cluster](https://www.mongodb.com/docs/atlas/tutorial/create-new-cluster/)
+- [Provision an Atlas instance](https://www.mongodb.com/docs/atlas/tutorial/deploy-free-tier-cluster/) .
 - [Setup the dataset and backend](./backend/)
 - [Installation of the frontend](./frontend/)
 - Executing the demo with docker
@@ -48,7 +47,6 @@ This demo showcases how to assess business loan risks using MongoDB's multimodal
 
 In the previous sections, we explored how to:
 
-- Create a dedicated cluster
 - How to use Geospatial data in MongoDB
 
 Are you prepared to harness these capabilities for your projects? Should you encounter any roadblocks or have questions, our vibrant [developer forums](https://www.mongodb.com/community/forums/) are here to support you every step of the way. Or if you prefer to contact us directly at [industry.solutions@mongodb.com](mailto:industry.solutions@mongodb.com).
