@@ -5,9 +5,6 @@ Clone the repo:
 git clone git@github.com:mongodb-industry-solutions/Risk-assessor.git
 ```
 
-> [!Warning]
-> Please start by making sure that the cluster that was created is indeed a dedicated one as "COORD_2dsphere" index are not available on shared cluesters.
-
 - [Connect to your cluster](https://www.mongodb.com/docs/atlas/connect-to-database-deployment/)
 - Create the "ESG_demo" database and the "Flood_geospatial" collection
 - Uncompress the file ESG_demo.Flood_geospatial.csv.zip
