@@ -11,11 +11,11 @@ The tech stack is :Geospatial
 - MongoDB Atlas/Enterprise
 - [Docker desktop](https://www.docker.com/products/docker-desktop/) (optional)
 - Google Maps API
-- [Fireworks.ia](https://fireworks.ai/)
+- [Fireworks.AI](https://fireworks.ai/)
 
 > [!Warning]
 > This demo uses several **paying services** which are not included in the demo such as : Google's [Reverse geocoding APIs](https://developers.google.com/maps/documentation/geocoding/requests-reverse-geocoding).
-> Also this demo uses Fireworks.ai's LLMs, and therefore will need an API key, which you can get by signing up for free with your Google account [here](https://fireworks.ai/login). 
+> Also this demo uses Fireworks.AI's LLMs, and therefore will need an API key, which you can get by signing up for free with your Google account [here](https://fireworks.ai/login). 
 
 > [!Note]
 > We have another version of this same demo that have an avatar to make it more interesting. Please go to our other [Github branch](https://github.com/mongodb-industry-solutions/Risk-assessor/tree/Avatar) which includes the avatar logic.
@@ -43,7 +43,7 @@ make clean
 
 ## Summary
 
-This demo showcases how to assess business loan risks using MongoDB's multimodal capabilities and GenAI, leveraging a tech stack that includes Node.js, Python, MongoDB Atlas, Docker, Google Maps API, and Fireworks.ai.
+This demo showcases how to assess business loan risks using MongoDB's multimodal capabilities and GenAI, leveraging a tech stack that includes Node.js, Python, MongoDB Atlas, Docker, Google Maps API, and Fireworks.AI.
 
 In the previous sections, we explored how to:
 
